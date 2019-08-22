@@ -2,115 +2,139 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:english_words/english_words.dart' as prefix0;
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(LifeSchoolApp());
 
-class MyApp extends StatelessWidget {
+class LifeSchoolApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Startup Name Generator',
+      title: 'Welcome to Life School',
       theme: ThemeData(
-        primaryColor: Colors.black,
+        primaryColor: Colors.white,
       ),
-      home: RandomWords(),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Welcome to Life School'),
+        ),
+        body: Center(
+          child: MastermindWidget(),
+        ),
+      ),
     );
   }
 }
 
-class RandomWordsState extends State<RandomWords> {
-  final _suggestions = <WordPair>[];
-  final Set<WordPair> _saved = Set<WordPair>();
-  final _biggerFont = const TextStyle(fontSize: 18.0);
+class MastermindWidget extends StatefulWidget {
+  @override
+  MastermindWidgetState createState() => MastermindWidgetState();
+}
 
+class MastermindWidgetState extends State<MastermindWidget> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Startup Name Generator'),
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.list), onPressed: _pushSaved)
-        ]
+    return PageView.builder(
+      itemBuilder: (context, position) => _buildMastermindCard(),
+      itemCount: 10,
+      scrollDirection: Axis.vertical,
+    );
+  }
+
+  Widget _buildMastermindCard() {
+    return Container(
+      color: Colors.orangeAccent,
+      child: Column(
+        children: [
+          _buildCardImages(),
+          _buildCardFacilitator(),
+          _buildCardLabels(),
+          _buildCardPricing(),
+          _buildCardReviews(),
+        ],
       ),
-      body: _buildSuggestions(),
-      );
+    );
   }
 
-  Widget _buildSuggestions() {
-    return ListView.builder(
-        padding: const EdgeInsets.all(16.0),
-        itemBuilder: /*1*/ (context, i) {
-          if (i.isOdd) return Divider(); /*2*/
-
-          final index = i ~/ 2; /*3*/
-          if (index >= _suggestions.length) {
-            _suggestions.addAll(generateWordPairs().take(10)); /*4*/
-          }
-          return _buildRow(_suggestions[index]);
-        });
+  // FOR NOW: just add images that already have text overlayed on them
+  Widget _buildCardImages() {
+    return Stack(
+      children: <Widget>[
+        Image.asset(
+          'assets/panache.png',
+          fit: BoxFit.contain,
+        ),
+      ],
+    );
   }
 
-  Widget _buildRow(WordPair pair) {
-    final bool alreadySaved = _saved.contains(pair);
+  Widget _buildCardFacilitator() {
     return ListTile(
-      title: Text(
-        pair.asPascalCase,
-        style: _biggerFont,
+      leading: FlutterLogo(size: 72.0),
+      title: Text('Panache Desai'),
+      subtitle: Text(
+        'Panache has never before worked so closely and intensely with such a small group of experienced practitioners.'
       ),
-      trailing: Icon(
-        alreadySaved ? Icons.favorite : Icons.favorite_border,
-        color: alreadySaved ? Colors.red : null,
-      ),
-      onTap: () {
-        setState(() {
-          if (alreadySaved) {
-            _saved.remove(pair);
-          } else {
-            _saved.add(pair);
-          }
-        });
-      },
+      isThreeLine: true,
     );
   }
 
-  void _pushSaved() {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (BuildContext context) {
-          final Iterable<ListTile> tiles = _saved.map(
-                (WordPair pair) {
-              return ListTile(
-                title: Text(
-                  pair.asPascalCase,
-                  style: _biggerFont,
-                ),
-              );
-            },
-          );
+  Widget _buildCardLabels() {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Chip(
+          label: Text('Virtual'),
+        ),
+        Chip(
+          label: Text('Weekly'),
+        ),
+        Chip(
+          label: Text('3 months'),
+        ),
+        Chip(
+          label: Text('12 People'),
+        )
+      ],
+    );
+  }
 
-          final List<Widget> divided = ListTile
-              .divideTiles(
-                context: context,
-                tiles: tiles,
-              )
-              .toList();
+  Widget _buildCardPricing() {
+    return Text('\$200/hr');
+  }
 
-          return Scaffold(
-            appBar: AppBar(
-              title: Text('Saved Suggestions'),
+  Widget _buildCardReviews() {
+    var stars = Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(Icons.star, color: Colors.yellow[500]),
+        Icon(Icons.star, color: Colors.yellow[500]),
+        Icon(Icons.star, color: Colors.yellow[500]),
+        Icon(Icons.star, color: Colors.white),
+        Icon(Icons.star, color: Colors.white),
+      ],
+    );
+
+    final ratings = Container(
+      padding: EdgeInsets.all(20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          stars,
+          Text(
+            '170 Reviews',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.w800,
+              fontFamily: 'Roboto',
+              letterSpacing: 0.5,
+              fontSize: 20,
             ),
-            body: ListView(children: divided),
-          );
-        },
+          ),
+        ],
       ),
     );
-  }
-}
 
-class RandomWords extends StatefulWidget {
-  @override
-  RandomWordsState createState() => RandomWordsState();
+    return ratings;
+  }
 }
