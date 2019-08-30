@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:life_school/detailed_mastermind_widget.dart';
 
 import 'package:life_school/models.dart';
+import 'package:life_school/utils.dart';
 
 class MastermindWidget extends StatefulWidget {
   final Mastermind mastermind;
@@ -21,26 +23,33 @@ class MastermindWidgetState extends State<MastermindWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Colors.indigoAccent,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          _buildCardImages(),
-          _buildCardFacilitator(),
-          _buildCardLabels(),
-          _buildCardPricing(),
-          _buildCardReviews(),
-        ],
+    void _handleOnTap () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => DetailedMastermindWidget(widget.mastermind)),
+      );
+    }
+
+    return InkWell(
+      child: Card(
+        color: Colors.white,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _buildImages(),
+            _buildFacilitator(),
+            _buildLabels(),
+            _buildPricing(),
+            _buildReviews(),
+          ],
+        ),
       ),
+      onTap: _handleOnTap,
     );
   }
 
-  // FOR NOW: just add images that already have text overlayed on them
-  Widget _buildCardImages() {
-    return GestureDetector(
-        child: Stack(
-      alignment: Alignment.center, // TODO: experiment
+  Widget _buildImages() {
+    return Stack(
       children: <Widget>[
         CarouselSlider(
           items: widget.mastermind.imageUrls.map((url) {
@@ -50,16 +59,36 @@ class MastermindWidgetState extends State<MastermindWidget> {
               width: MediaQuery.of(context).size.width,
             );
           }).toList(),
-          aspectRatio: 1 / 1,
-          viewportFraction: 1.0, // TODO: what does this really do?
+          aspectRatio: 1.1,
+          viewportFraction: 1.0,
           enableInfiniteScroll: false,
           onPageChanged: _updateImageIndex,
+          enlargeCenterPage: true,
+        ),
+        Positioned(
+          bottom: 0.0,
+          left: 0.0,
+          right: 0.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: utilsMap<Widget>(widget.mastermind.imageUrls, (index, url) {
+              return Container(
+                  width: 8.0,
+                  height: 8.0,
+                  margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: _currentImageIndex == index
+                          ? Colors.white
+                          : Colors.white70));
+            }),
+          ),
         ),
       ],
-    ));
+    );
   }
 
-  Widget _buildCardFacilitator() {
+  Widget _buildFacilitator() {
     return ListTile(
       leading: CircleAvatar(
         radius: 28.0,
@@ -71,7 +100,7 @@ class MastermindWidgetState extends State<MastermindWidget> {
     );
   }
 
-  Widget _buildCardLabels() {
+  Widget _buildLabels() {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children:
@@ -83,12 +112,14 @@ class MastermindWidgetState extends State<MastermindWidget> {
     );
   }
 
-  Widget _buildCardPricing() {
-    return Text('\$' + widget.mastermind.price.toString() + '/hr');
+  Widget _buildPricing() {
+    return Text(
+      '\$' + widget.mastermind.price.toString() + '/hr',
+      style: getHeaderTextStyle(),
+    );
   }
 
-  // TODO: use mock reviews
-  Widget _buildCardReviews() {
+  Widget _buildReviews() {
     final _reviews = widget.mastermind.reviews;
     final _reviewQuantity = _reviews.length;
     final _averageScore =
@@ -100,7 +131,7 @@ class MastermindWidgetState extends State<MastermindWidget> {
       children: new List<Icon>.generate(5, (int index) {
         return (index + 1 <= _averageScore)
             ? Icon(Icons.star, color: Colors.yellow[500])
-            : Icon(Icons.star, color: Colors.white);
+            : Icon(Icons.star, color: Colors.grey);
       }),
     );
 
@@ -112,13 +143,7 @@ class MastermindWidgetState extends State<MastermindWidget> {
           stars,
           Text(
             _reviewQuantity.toString() + ' Reviews',
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.w800,
-              fontFamily: 'Roboto',
-              letterSpacing: 0.5,
-              fontSize: 20,
-            ),
+            style: getHeaderTextStyle(),
           ),
         ],
       ),

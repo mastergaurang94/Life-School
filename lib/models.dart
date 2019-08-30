@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/foundation.dart';
 
 import 'dart:math';
 
@@ -7,9 +7,11 @@ class Mastermind {
   List<String> imageUrls;
   final Facilitator facilitator;
   String coverDescription;
-  List<String> labels;
+  List<String> labels; // todo: set
   double price;
   List<Review> reviews;
+  String overview;
+  String whoThisFor;
 
   Mastermind(
       {@required this.imageUrls,
@@ -17,6 +19,8 @@ class Mastermind {
       @required this.coverDescription,
       @required this.labels,
       @required this.price,
+      @required this.overview,
+      @required this.whoThisFor,
       this.reviews});
 }
 
@@ -70,12 +74,51 @@ const ramuVelu = Student(name: 'Ramu Velu');
 
 const students = [gaurangPatel, anandPanchal, harshilPatel, ramuVelu];
 
+// TODO: add to mastermind model
+const Set<String> whatYouGet = {
+  'Exclusive Weekly Content and Strategies',
+  'Group Facilitator Guidance',
+  'Personal 1:1 Facilitator Guidance',
+  'Private Support Community',
+  'Mentorship from Expert Guest Speakers',
+  'Interactive Weekly Conference Calls',
+  'Access to Live Events',
+};
+
+const Set<String> whatYouLearn = {
+  'Goal Setting',
+  'Life Mastery',
+  'Emotional Fitness',
+  'Relationship Communication',
+  'Connecting with Who You Are',
+  'Single Family Home Real Estate',
+  'Budgeting',
+  'Having Fun',
+  'Scuba Diving',
+  'Snowboarding',
+  'Aikido',
+  'Building a Wide Network',
+  'Sexual Mastery',
+  'Spiritual Jedi Training'
+};
+
+List<String> generateWhatYouLearn() {
+  var rng = new Random();
+  return whatYouLearn.toList()..shuffle();
+}
+
+List<String> generateWhatYouGet() {
+  var rng = new Random();
+  var shuffledList = whatYouGet.toList()..shuffle();
+  return shuffledList.take(rng.nextInt(whatYouGet.length - 4) + 3).toList();
+}
+
 List<Review> generateMockReviews() {
   var rng = new Random();
   return new List<Review>.generate(rng.nextInt(100), (int index) {
     return Review(
       student: students[index % 4],
-      score: rng.nextInt(2) + 3,
+      score: rng.nextInt(1) + 4, // to ensure 4+ stars
     );
   });
 }
@@ -89,6 +132,8 @@ final mockMasterminds = <Mastermind>[
       'assets/panache3.png',
     ],
     coverDescription: 'Panache has never before worked so closely and intensely with such a small group of experienced practitioners',
+    whoThisFor: 'Panache has never before worked so closely and intensely with such a small group of experienced practitioners',
+    overview: 'Panache has never before worked so closely and intensely with such a small group of experienced practitioners, Panache has never before worked so closely and intensely with such a small group of experienced practitioners',
     labels: [
       'Virtual',
       'Weekly',
@@ -105,6 +150,8 @@ final mockMasterminds = <Mastermind>[
       'assets/tony2.png',
     ],
     coverDescription: 'As a Tony Robbins Platinum Partnership member you’ll receive exclusive invitations to get coaching from Tony',
+    whoThisFor: 'As a Tony Robbins Platinum Partnership member you’ll receive exclusive invitations to get coaching from Tony',
+    overview: 'As a Tony Robbins Platinum Partnership member you’ll receive exclusive invitations to get coaching from TonyAs a Tony Robbins Platinum Partnership member you’ll receive exclusive invitations to get coaching from TonyAs a Tony Robbins Platinum Partnership member you’ll receive exclusive invitations to get coaching from Tony',
     labels: [
       'Live',
       'Monthly'
@@ -121,6 +168,8 @@ final mockMasterminds = <Mastermind>[
       'assets/kiyosaki2.png',
     ],
     coverDescription: 'Robert Kiyosaki brings real financial eduation to people by helping them create long term cash flow no matter where they start',
+    whoThisFor: 'Robert Kiyosaki brings real financial eduation to people by helping them create long term cash flow no matter where they start',
+    overview: 'Robert Kiyosaki brings real financial eduation to people by helping them create long term cash flow no matter where they startRobert Kiyosaki brings real financial eduation to people by helping them create long term cash flow no matter where they startRobert Kiyosaki brings real financial eduation to people by helping them create long term cash flow no matter where they start',
     labels: [
       'Virtual',
       'Weekly',
@@ -138,6 +187,8 @@ final mockMasterminds = <Mastermind>[
       'assets/will3.png',
     ],
     coverDescription: 'Will Smith and Jada Pinkett Smith bring to you the secrets to long lasting desire and happiness in your relationship',
+    whoThisFor: 'Will Smith and Jada Pinkett Smith bring to you the secrets to long lasting desire and happiness in your relationship',
+    overview: 'Will Smith and Jada Pinkett Smith bring to you the secrets to long lasting desire and happiness in your relationshipWill Smith and Jada Pinkett Smith bring to you the secrets to long lasting desire and happiness in your relationship',
     labels: [
       'Virtual',
       'Weekly',
@@ -153,6 +204,8 @@ final mockMasterminds = <Mastermind>[
       'assets/shaun1.png',
     ],
     coverDescription: 'Get insights into how to improve your snowboarding from world renown Olympic athelete Shaun White',
+    whoThisFor: 'Get insights into how to improve your snowboarding from world renown Olympic athelete Shaun White',
+    overview: 'Get insights into how to improve your snowboarding from world renown Olympic athelete Shaun WhiteGet insights into how to improve your snowboarding from world renown Olympic athelete Shaun WhiteGet insights into how to improve your snowboarding from world renown Olympic athelete Shaun White',
     labels: [
       'Virtual',
       'Weekly',
