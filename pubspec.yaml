@@ -1,4 +1,4 @@
-name: life_school
+name: lifeschool
 description: Learn from the very best in intimate masterminds
 
 # The following defines the version and build number for your application.
@@ -21,6 +21,21 @@ dependencies:
     sdk: flutter
 
   carousel_slider: ^1.3.0
+  flutter_bloc:
+  shared_preferences:
+  firebase_auth:
+  firebase_database:
+  cloud_firestore:
+  google_sign_in:
+  firebase_storage:
+  flutter_facebook_login:
+  image_picker:
+  cached_network_image:
+  intl:
+  fluttertoast:
+  equatable:
+  rxdart:
+  built_value:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -29,6 +44,9 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  build_runner:
+  built_value_generator:
 
 
 # For information on the generic Dart part of this file, see the
