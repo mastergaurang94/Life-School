@@ -31,7 +31,7 @@ ios/.idea/
 ios/.vagrant/
 ios/.sconsign.dblite
 ios/.svn/
-
+ios/.symlinks/
 ios/.DS_Store
 ios/*.swp
 ios/profile

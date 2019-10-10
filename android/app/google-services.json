@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "36341940553",
+    "firebase_url": "https://life-school-99984.firebaseio.com",
+    "project_id": "life-school-99984",
+    "storage_bucket": "life-school-99984.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:36341940553:android:71a43b34c9f3bad9b81a98",
+        "android_client_info": {
+          "package_name": "com.lifeschool"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "36341940553-2sgnp4bk9hkb3hpkdlfhngb6ubg55n6r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcytaYZiwj_W2Vq8_M9Ha9jdTEDicdVog"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "36341940553-2sgnp4bk9hkb3hpkdlfhngb6ubg55n6r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,24 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-import 'package:life_school/models.dart';
-import 'package:life_school/utils.dart';
+import 'package:lifeschool/models.dart';
+import 'package:lifeschool/utils.dart';
+import 'package:lifeschool/enroll/order_page_widget.dart';
 
-class DetailedMastermindWidget extends StatefulWidget {
+class MastermindDetailWidget extends StatefulWidget {
   final Mastermind mastermind;
 
-  DetailedMastermindWidget(this.mastermind);
+  MastermindDetailWidget(this.mastermind);
 
   @override
-  DetailedMastermindWidgetState createState() =>
-      DetailedMastermindWidgetState();
+  MastermindDetailWidgetState createState() => MastermindDetailWidgetState();
 }
 
-class DetailedMastermindWidgetState extends State<DetailedMastermindWidget> {
+class MastermindDetailWidgetState extends State<MastermindDetailWidget> {
   int _currentImageIndex = 0;
 
   void _updateImageIndex(int index) {
     setState(() => _currentImageIndex = index);
+  }
+
+  void _handleOnPressed() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => OrderPageWidget(widget.mastermind)),
+    );
   }
 
   @override
@@ -29,27 +37,43 @@ class DetailedMastermindWidgetState extends State<DetailedMastermindWidget> {
         child: ListView(
           children: [
             _buildImages(),
+            _buildTitle(),
             _buildFacilitator(),
+            Divider(
+              color: Colors.grey,
+              height: 32.0,
+              endIndent: 16.0,
+              indent: 16.0
+            ),
+            _buildContactFacilitator(),
+            Divider(
+                color: Colors.grey,
+                height: 16.0,
+                endIndent: 16.0,
+                indent: 16.0
+            ),
             _buildOverview(),
             _buildWhoFor(),
             _buildWhatYouGet(),
             _buildWhatYouLearn(),
             _buildStructure(),
+            // _buildProgressBar(),
             _buildReviews(),
           ],
         ),
       ),
-      bottomNavigationBar: new Container(
-        decoration: new BoxDecoration(
-          borderRadius: BorderRadius.vertical(top: new Radius.circular((12.0))),
+      bottomNavigationBar: Container(
+        padding: EdgeInsets.all(6.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.vertical(top: Radius.circular((12.0))),
           color: Colors.blue,
         ),
-        child: new MaterialButton(
-          onPressed: () {},
-          child: new Padding(
+        child: MaterialButton(
+          onPressed: () => _handleOnPressed(),
+          child: Container(
             padding: const EdgeInsets.all(12.0),
-            child: new Text('Apply Now',
-                style: new TextStyle(
+            child: Text(generateCallToActionString(widget.mastermind.price),
+                style: TextStyle(
                     color: Colors.white,
                     letterSpacing: 0.5,
                     fontSize: 20.0,
@@ -66,11 +90,13 @@ class DetailedMastermindWidgetState extends State<DetailedMastermindWidget> {
       children: <Widget>[
         CarouselSlider(
           items: widget.mastermind.imageUrls.map((url) {
-            return Image.asset(
-              url,
-              fit: BoxFit.fill,
-              width: MediaQuery.of(context).size.width,
-            );
+            return Hero(
+                tag: 'mastermind_carousel_' + url.toString(),
+                child: Image.asset(
+                  url,
+                  fit: BoxFit.fill,
+                  width: MediaQuery.of(context).size.width,
+                ));
           }).toList(),
           aspectRatio: 0.9,
           viewportFraction: 1.0,
@@ -79,15 +105,15 @@ class DetailedMastermindWidgetState extends State<DetailedMastermindWidget> {
           enlargeCenterPage: true,
         ),
         Positioned(
-            top: 4.0,
-            left: 4.0,
+            top: 24.0,
+            left: 16.0,
             child: GestureDetector(
               onTap: () {
                 Navigator.pop(context);
               },
               child: Icon(
                 Icons.close,
-                color: Colors.white, // TODO: what about white backgrounds?
+                color: Colors.white,
                 size: 28.0,
               ),
             )),
@@ -115,9 +141,22 @@ class DetailedMastermindWidgetState extends State<DetailedMastermindWidget> {
     );
   }
 
+  Widget _buildTitle() {
+    return Container(
+        padding: EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0, bottom: 8.0),
+        child: Text(widget.mastermind.title,
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.w800,
+              fontFamily: 'Roboto',
+              letterSpacing: 0.5,
+              fontSize: 24.0,
+            )));
+  }
+
   Widget _buildFacilitator() {
     return Container(
-      padding: const EdgeInsets.only(top: 16.0, left: 8.0, right: 4.0),
+      padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
       child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -141,9 +180,52 @@ class DetailedMastermindWidgetState extends State<DetailedMastermindWidget> {
     );
   }
 
+  Widget _buildContactFacilitator() {
+    return Container(
+      padding: const EdgeInsets.only(bottom: 12.0, left: 16.0, right: 4.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Questions about ' + widget.mastermind.facilitator.name + '\'s mastermind?',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.w600,
+              fontFamily: 'Roboto',
+              letterSpacing: 0.5,
+              fontSize: 16,
+            )
+          ),
+          Padding(padding: EdgeInsets.symmetric(vertical: 8.0)),
+          GestureDetector(
+              onTap: () {
+                // Go to Inbox
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 12.0),
+                width: 380,
+                alignment: Alignment.center,
+                decoration: new BoxDecoration(
+                  border: Border.all(color: Colors.blue, width: 2.0),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                child: Text('Contact facilitator',
+                  style: TextStyle(
+                      color: Colors.blue,
+                      letterSpacing: 0.5,
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w600,
+                      fontFamily: 'Roboto'))
+              )
+          )
+        ]
+      )
+    );
+  }
+
   Widget _buildOverview() {
     return Container(
-      padding: const EdgeInsets.only(top: 16.0, left: 8.0, right: 4.0),
+      padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
       child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,7 +243,7 @@ class DetailedMastermindWidgetState extends State<DetailedMastermindWidget> {
 
   Widget _buildWhoFor() {
     return Container(
-      padding: const EdgeInsets.only(top: 16.0, left: 8.0, right: 4.0),
+      padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
       child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -181,7 +263,7 @@ class DetailedMastermindWidgetState extends State<DetailedMastermindWidget> {
     List<String> whatYouGet = generateWhatYouGet();
 
     return Container(
-      padding: new EdgeInsets.only(top: 16.0, left: 8.0, right: 8.0),
+      padding: EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
       margin: EdgeInsets.symmetric(vertical: 6.0),
       child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -192,15 +274,15 @@ class DetailedMastermindWidgetState extends State<DetailedMastermindWidget> {
               child: Text("What You'll Get", style: getHeaderTextStyle()),
             ),
             Container(
-                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
                 color: Colors.blueGrey[50],
                 child: Column(
-                    children: new List<Widget>.generate(whatYouGet.length,
-                        (int index) {
+                    children:
+                        List<Widget>.generate(whatYouGet.length, (int index) {
                   return Row(children: <Widget>[
                     Icon(
                       Icons.check_circle_outline,
-                      color: Colors.black,
+                      color: Colors.green,
                     ),
                     Padding(padding: EdgeInsets.only(left: 8.0)),
                     Text(whatYouGet[index]),
@@ -221,7 +303,7 @@ class DetailedMastermindWidgetState extends State<DetailedMastermindWidget> {
     ];
 
     return Container(
-      padding: const EdgeInsets.only(top: 16.0, left: 8.0),
+      padding: const EdgeInsets.only(top: 16.0, left: 16.0),
       child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -241,10 +323,11 @@ class DetailedMastermindWidgetState extends State<DetailedMastermindWidget> {
                         borderRadius: BorderRadius.circular(8.0),
                         color: colorOptions[index],
                       ),
-                      margin: new EdgeInsets.only(right: 8.0),
+                      margin: EdgeInsets.only(right: 8.0),
                       width: cardSize,
-                      child: new Container(
-                        padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
+                      child: Container(
+                        padding:
+                            const EdgeInsets.only(left: 12.0, bottom: 16.0),
                         child: Text(
                           generateWhatYouLearn()[index],
                           style: TextStyle(
@@ -267,7 +350,7 @@ class DetailedMastermindWidgetState extends State<DetailedMastermindWidget> {
   // TODO: do we need a structure?
   Widget _buildStructure() {
     return Container(
-      padding: const EdgeInsets.only(top: 16.0, left: 8.0, right: 4.0),
+      padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
       child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -292,7 +375,7 @@ class DetailedMastermindWidgetState extends State<DetailedMastermindWidget> {
             .round();
 
     var stars = Row(
-      children: new List<Icon>.generate(5, (int index) {
+      children: List<Icon>.generate(5, (int index) {
         return (index + 1 <= _averageScore)
             ? Icon(Icons.star, color: Colors.yellow[500])
             : Icon(Icons.star, color: Colors.grey);
@@ -300,7 +383,7 @@ class DetailedMastermindWidgetState extends State<DetailedMastermindWidget> {
     );
 
     return Container(
-        padding: const EdgeInsets.only(top: 16.0, bottom: 16.0, left: 8.0),
+        padding: const EdgeInsets.only(top: 16.0, bottom: 16.0, left: 16.0, right: 16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,

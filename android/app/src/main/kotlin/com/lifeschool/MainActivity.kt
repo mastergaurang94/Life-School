@@ -1,4 +1,4 @@
-package com.example.life_school
+package com.lifeschool
 
 import android.os.Bundle
 

@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'dart:math';
 
 class Mastermind {
+  String title;
   List<String> imageUrls;
   final Facilitator facilitator;
   String coverDescription;
@@ -14,7 +15,8 @@ class Mastermind {
   String whoThisFor;
 
   Mastermind(
-      {@required this.imageUrls,
+      {@required this.title,
+      @required this.imageUrls,
       @required this.facilitator,
       @required this.coverDescription,
       @required this.labels,
@@ -85,6 +87,7 @@ const Set<String> whatYouGet = {
   'Access to Live Events',
 };
 
+// TODO: add to mastermind model
 const Set<String> whatYouLearn = {
   'Goal Setting',
   'Life Mastery',
@@ -101,6 +104,16 @@ const Set<String> whatYouLearn = {
   'Sexual Mastery',
   'Spiritual Jedi Training'
 };
+
+// TODO: add to mastermind model
+const List<String> nextSteps = [
+  'You are part of the family now. Join our private facebook group: LINK',
+  'Look out for a call or e-mail from me or someone on my team to discuss next steps'
+];
+
+List<String> generateNextSteps() {
+  return nextSteps;
+}
 
 List<String> generateWhatYouLearn() {
   var rng = new Random();
@@ -123,8 +136,13 @@ List<Review> generateMockReviews() {
   });
 }
 
+String generateCallToActionString(double price) {
+  return price <= 1000.00 ? 'Enroll' : 'Apply';
+}
+
 final mockMasterminds = <Mastermind>[
   Mastermind(
+    title: 'How to Relax in 7 Days Without Freaking Out At All',
     facilitator: panacheDesai,
     imageUrls: [
       'assets/panache1.png',
@@ -136,14 +154,15 @@ final mockMasterminds = <Mastermind>[
     overview: 'Panache has never before worked so closely and intensely with such a small group of experienced practitioners, Panache has never before worked so closely and intensely with such a small group of experienced practitioners',
     labels: [
       'Virtual',
-      'Weekly',
-      '3 months',
-      '12 people',
+      'Recurring',
+      'Starts 9/13',
+      'Max 40 seats',
     ],
     price: 200,
     reviews: generateMockReviews(),
   ),
   Mastermind(
+    title: 'How to Make Stuff Happen',
     facilitator: tonyRobbins,
     imageUrls: [
       'assets/tony1.png',
@@ -154,14 +173,15 @@ final mockMasterminds = <Mastermind>[
     overview: 'As a Tony Robbins Platinum Partnership member you’ll receive exclusive invitations to get coaching from TonyAs a Tony Robbins Platinum Partnership member you’ll receive exclusive invitations to get coaching from TonyAs a Tony Robbins Platinum Partnership member you’ll receive exclusive invitations to get coaching from Tony',
     labels: [
       'Live',
-      'Monthly'
-      '3 months',
-      '150 people',
+      'One Time'
+      '4 days',
+      '4 Max 150 people',
     ],
     price: 2000,
     reviews: generateMockReviews(),
   ),
   Mastermind(
+    title: 'How to Make Money',
     facilitator: robertKiyosaki,
     imageUrls: [
       'assets/kiyosaki1.png',
@@ -180,6 +200,7 @@ final mockMasterminds = <Mastermind>[
     reviews: generateMockReviews(),
   ),
   Mastermind(
+    title: 'How to Love',
     facilitator: willSmith,
     imageUrls: [
       'assets/will1.png',
@@ -199,6 +220,7 @@ final mockMasterminds = <Mastermind>[
     reviews: generateMockReviews(),
   ),
   Mastermind(
+    title: 'How to Snowboard',
     facilitator: shaunWhite,
     imageUrls: [
       'assets/shaun1.png',
