@@ -136,7 +136,27 @@ class LoginScreenState extends State<LoginScreen> {
         borderRadius: BorderRadius.circular(30.0),
       ),
       icon: Icon(FontAwesomeIcons.google, color: Colors.white),
-      onPressed: () {},
+      onPressed: () async {
+        try {
+          await _bloc.handleGoogleLoginPressed(context);
+        } catch (e) {
+          showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text('Failed to continue with Google'),
+                content: Text(
+                    'Please retry or try again later.'),
+                actions: <Widget>[
+                  RaisedButton(
+                    child: Text('OK', style: TextStyle(color: Colors.white)),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ));
+        }
+      },
       label: Text('CONTINUE WITH GOOGLE', style: TextStyle(color: Colors.white)),
       color: Colors.redAccent,
     );

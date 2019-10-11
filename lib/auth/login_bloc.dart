@@ -43,6 +43,14 @@ class LoginBloc {
     }
   }
 
+  Future<void> handleGoogleLoginPressed(BuildContext context) async {
+    loginState.add(LoginState.LOADING);
+    await _authRepository.signInWithGoogle();
+    loginState.add(LoginState.SUCCESS);
+    final route = await _getAuthRoute.getAuthRouteName();
+    Navigator.pushReplacementNamed(context, route);
+  }
+
   Future<void> handleForgotPasswordPressed(BuildContext context, String email) async {
     loginState.add(LoginState.LOADING);
     await _authRepository.forgotPassword(email);
