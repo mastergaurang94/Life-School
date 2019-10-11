@@ -11,15 +11,9 @@ class LoginBloc {
   LoginBloc(this._authRepository, this._getAuthRoute);
 
   // ignore: close_sinks
-  BehaviorSubject<String> errorMessage = BehaviorSubject();
-
-  // ignore: close_sinks
-  BehaviorSubject<bool> resetEmailSent = BehaviorSubject.seeded(false);
-
-  // ignore: close_sinks
   BehaviorSubject<LoginState> loginState = BehaviorSubject.seeded(LoginState.IDLE);
 
-  void handleLoginPressed(BuildContext context, String email, String password) async {
+  Future<void> handleLoginPressed(BuildContext context, String email, String password) async {
     loginState.add(LoginState.LOADING);
 
     try {
@@ -28,12 +22,12 @@ class LoginBloc {
       final route = await _getAuthRoute.getAuthRouteName();
       Navigator.pushReplacementNamed(context, route);
     } catch (e) {
-      errorMessage.add(e.toString());
       loginState.add(LoginState.IDLE);
+      throw e;
     }
   }
 
-  void handleSignUpPressed(BuildContext context, String email, String password, String confirmedPassword,
+  Future<void> handleSignUpPressed(BuildContext context, String email, String password, String confirmedPassword,
       String firstName, String lastName) async {
     loginState.add(LoginState.LOADING);
 
@@ -44,30 +38,19 @@ class LoginBloc {
       final route = await _getAuthRoute.getAuthRouteName();
       Navigator.of(context).pushNamed(route);
     } catch (e) {
-      errorMessage.add(e.toString());
       loginState.add(LoginState.IDLE);
+      throw e;
     }
   }
 
-  void handleForgotPasswordPressed(BuildContext context, String email) async {
-    if (validateEmail(email) != null) {
-      errorMessage.add(validateEmail(email));
-    } else {
-      loginState.add(LoginState.LOADING);
-      await _authRepository.forgotPassword(email);
-      errorMessage.add("");
-      resetEmailSent.add(true);
-      loginState.add(LoginState.IDLE);
-    }
+  Future<void> handleForgotPasswordPressed(BuildContext context, String email) async {
+    loginState.add(LoginState.LOADING);
+    await _authRepository.forgotPassword(email);
+    loginState.add(LoginState.IDLE);
   }
 
-  void handleDeleteUser() async {
-    try {
-      await _authRepository.deleteUser();
-    } catch (e) {
-      errorMessage.add(e.toString());
-    }
-
+  Future<void> handleDeleteUser() async {
+    await _authRepository.deleteUser();
     loginState.add(LoginState.IDLE);
   }
 
@@ -76,7 +59,7 @@ class LoginBloc {
     return await _authRepository.getUser();
   }
 
-  void sendEmailVerification() async {
+  Future<void> sendEmailVerification() async {
     await _authRepository.sendEmailVerification();
   }
 

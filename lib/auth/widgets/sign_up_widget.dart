@@ -14,7 +14,7 @@ class SignUpWidget extends StatefulWidget {
 class SignUpWidgetState extends State<SignUpWidget> {
   final LoginBloc _bloc = Injector().loginBloc;
   LoginState _loginState = LoginState.IDLE;
-  StreamSubscription _loginTypeSubscription, _loginStateSubscription;
+  StreamSubscription _loginStateSubscription;
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -38,7 +38,6 @@ class SignUpWidgetState extends State<SignUpWidget> {
 
   @override
   void dispose() {
-    _loginTypeSubscription?.cancel();
     _loginStateSubscription?.cancel();
     _emailController.dispose();
     _passwordController.dispose();
@@ -140,12 +139,12 @@ class SignUpWidgetState extends State<SignUpWidget> {
 
   Widget _createAccountButton() {
     if (_loginState == LoginState.LOADING) {
-      return RaisedButton(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0),
+      return Container(
+          decoration: new BoxDecoration(
+              borderRadius: BorderRadius.circular(30.0),
+              color: Colors.grey
           ),
-          child: Container(child: CircularProgressIndicator()),
-          color: Colors.blue);
+          child: Container(alignment: Alignment.center, child: CircularProgressIndicator()));
     } else if (_loginState == LoginState.SUCCESS) {
       return Icon(Icons.check, color: Colors.blue, size: 36.0);
     }
@@ -154,12 +153,30 @@ class SignUpWidgetState extends State<SignUpWidget> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30.0),
       ),
-      onPressed: () {
+      onPressed: () async {
         final form = _formKey.currentState;
         form.save();
         if (form.validate() && isCreateAccountButtonEnabled) {
-          _bloc.handleSignUpPressed(context, _emailController.text, _passwordController.text,
-              _confirmPasswordController.text, _firstNameController.text, _lastNameController.text);
+          try {
+            await _bloc.handleSignUpPressed(context, _emailController.text, _passwordController.text,
+                _confirmPasswordController.text, _firstNameController.text, _lastNameController.text);
+          } catch (e) {
+            showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: Text('Failed to created account'),
+                  content: Text('Please ensure the information you entered is correct. If you have previously used this email, please go back and log in. Otherwise, contact support.'),
+                  actions: <Widget>[
+                    RaisedButton(
+                      child: Text('OK', style: TextStyle(color: Colors.white)),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                ));
+          }
+
         } else {
           setState(() => _autoValidate = true);
         }

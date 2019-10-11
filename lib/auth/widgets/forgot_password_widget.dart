@@ -1,27 +1,23 @@
 import 'dart:async';
 
-import 'package:lifeschool/auth/login_bloc.dart';
-import 'package:lifeschool/auth/widgets/forgot_password_widget.dart';
+import 'package:lifeschool/auth/usecase/get_auth_route.dart';
 import 'package:lifeschool/injection/dependency_injection.dart';
+import 'package:lifeschool/auth/login_bloc.dart';
 import 'package:flutter/material.dart';
 
-class LoginWidget extends StatefulWidget {
+class ForgotPasswordWidget extends StatefulWidget {
   @override
-  LoginWidgetState createState() {
-    return new LoginWidgetState();
-  }
+  ForgotPasswordWidgetState createState() => ForgotPasswordWidgetState();
 }
 
-class LoginWidgetState extends State<LoginWidget> {
+class ForgotPasswordWidgetState extends State<ForgotPasswordWidget> {
   final LoginBloc _bloc = Injector().loginBloc;
+  final GetAuthRoute _getAuthRoute = Injector().getAuthRoute;
   LoginState _loginState = LoginState.IDLE;
-  StreamSubscription _loginTypeSubscription, _loginStateSubscription;
+  StreamSubscription _loginStateSubscription;
 
   final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
   final _emailNode = FocusNode();
-  final _passwordNode = FocusNode();
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _autoValidate = false;
 
@@ -33,36 +29,38 @@ class LoginWidgetState extends State<LoginWidget> {
 
   @override
   void dispose() {
-    _loginTypeSubscription?.cancel();
     _loginStateSubscription?.cancel();
     _emailController.dispose();
-    _passwordController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(actions: [
-          Container(padding: EdgeInsets.only(right: 16.0), alignment: Alignment.center, child: GestureDetector(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPasswordWidget()));
-            },
-            child: Text('Forgot Password?', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16)),
-          )),
-        ]),
+        appBar: AppBar(),
         body: Container(
             padding: EdgeInsets.all(20.0),
             child: Form(
                 key: _formKey,
-                child: ListView(children: [
+                child: Column(children: [
                   Container(
+                      alignment: Alignment.centerLeft,
                       padding: EdgeInsets.symmetric(vertical: 8.0),
-                      child: Text('Log In',
+                      child: Text('Forgot your password?',
                           style: TextStyle(
                               color: Colors.black,
                               letterSpacing: 0.5,
                               fontSize: 32.0,
+                              fontWeight: FontWeight.w700,
+                              fontFamily: 'Roboto'))),
+                  Container(
+                      alignment: Alignment.centerLeft,
+                      padding: EdgeInsets.symmetric(vertical: 2.0),
+                      child: Text('Enter your email to find your account.',
+                          style: TextStyle(
+                              color: Colors.black,
+                              letterSpacing: 0.5,
+                              fontSize: 18.0,
                               fontWeight: FontWeight.w700,
                               fontFamily: 'Roboto'))),
                   TextFormField(
@@ -76,59 +74,57 @@ class LoginWidgetState extends State<LoginWidget> {
                     autocorrect: false,
                     validator: (String value) => _bloc.validateEmail(value),
                   ),
-                  TextFormField(
-                    focusNode: _passwordNode,
-                    controller: _passwordController,
-                    decoration: InputDecoration(
-                        icon: Icon(Icons.lock, color: _passwordNode.hasFocus ? Colors.black : Colors.grey),
-                        labelText: 'Password',
-                        labelStyle: TextStyle(color: _passwordNode.hasFocus ? Colors.black : Colors.grey)),
-                    obscureText: true,
-                    autovalidate: _autoValidate,
-                    autocorrect: false,
-                    validator: (String value) => _bloc.validatePassword(value),
-                  ),
                   Container(
                       padding: EdgeInsets.symmetric(vertical: 20.0),
                       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-                        _loginButton(),
-                      ])),
+                        _forgotPasswordButton(),
+                ]))
                 ]))));
   }
 
-  bool get isPopulated => _emailController.text.isNotEmpty && _passwordController.text.isNotEmpty;
-
-  bool get isCreateAccountButtonEnabled => _loginState != LoginState.LOADING && isPopulated;
-
-  Widget _loginButton() {
+  Widget _forgotPasswordButton() {
     if (_loginState == LoginState.LOADING) {
       return Container(
-        decoration: new BoxDecoration(
-            borderRadius: BorderRadius.circular(30.0),
-            color: Colors.grey
+          decoration: new BoxDecoration(
+              borderRadius: BorderRadius.circular(30.0),
+              color: Colors.grey
           ),
           child: Container(alignment: Alignment.center, child: CircularProgressIndicator()));
-    } else if (_loginState == LoginState.SUCCESS) {
-      return Icon(Icons.check, color: Colors.blue, size: 36.0);
     }
 
     return RaisedButton(
+      child: Text('SEND EMAIL', style: TextStyle(color: Colors.white)),
+      color: Colors.blue,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30.0),
       ),
       onPressed: () async {
         final form = _formKey.currentState;
-        form.save();
-        if (form.validate() && isCreateAccountButtonEnabled) {
+        if (form.validate()) {
           try {
-            await _bloc.handleLoginPressed(context, _emailController.text, _passwordController.text);
+            await _bloc.handleForgotPasswordPressed(context, _emailController.text);
+            showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                      title: Text('Password Reset Email Sent'),
+                      content: Text(
+                          'An email has been sent to the specified email with reset instructions. Please check all your folders including junk or spam.'),
+                      actions: <Widget>[
+                        RaisedButton(
+                          child: Text('Go back to Log In', style: TextStyle(color: Colors.white)),
+                          onPressed: () async {
+                            final route = await _getAuthRoute.getAuthRouteName();
+                            Navigator.of(context).pushReplacementNamed(route);
+                          },
+                        ),
+                      ],
+                    ));
           } catch (e) {
             showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                      title: Text('Failed to login'),
-                      content: Text(
-                          'Please retry using your correct username and password or contact support if you have trouble logging in.'),
+                      title: Text('Failed to send password reset email'),
+                      content: Text('Please ensure you entered the correct email. Otherwise, contact support.'),
                       actions: <Widget>[
                         RaisedButton(
                           child: Text('OK', style: TextStyle(color: Colors.white)),
@@ -143,8 +139,6 @@ class LoginWidgetState extends State<LoginWidget> {
           setState(() => _autoValidate = true);
         }
       },
-      child: Text('LOG IN', style: TextStyle(color: Colors.white)),
-      color: Colors.blue,
     );
   }
 }

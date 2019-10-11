@@ -95,7 +95,7 @@ class VerifyEmailWidget extends StatelessWidget {
                                 context: context,
                                 builder: (context) => AlertDialog(
                                       title: Text('Email Verification Sent'),
-                                      content: Text("Please check your phone for the code."),
+                                      content: Text("Please check your email to verify."),
                                       actions: <Widget>[
                                         RaisedButton(
                                           child: Text('OK', style: TextStyle(color: Colors.white)),

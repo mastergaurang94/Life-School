@@ -21,6 +21,7 @@ class LifeSchoolApp extends StatelessWidget {
       title: 'Life School',
       theme: ThemeData(
         primaryColor: Colors.white,
+        canvasColor: Colors.white,
       ),
       onGenerateRoute: generateRoute,
       initialRoute: SplashRoute,

@@ -93,22 +93,7 @@ class LoginScreenState extends State<LoginScreen> {
                   child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                 _createAccountButton(),
                 _loginButton(),
-              ])),
-              Center(
-                child: StreamBuilder(
-                    stream: _bloc.errorMessage,
-                    builder: (context, snapshot) {
-                      return Offstage(
-                        offstage: snapshot.data == null,
-                        child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text(
-                              snapshot.data ?? "",
-                              style: Theme.of(context).textTheme.body1.apply(color: Theme.of(context).errorColor),
-                            )),
-                      );
-                    }),
-              ),
+              ]))
             ]))));
   }
 
