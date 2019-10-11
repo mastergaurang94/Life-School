@@ -19,3 +19,8 @@ TextStyle getHeaderTextStyle() {
     fontSize: 20,
   );
 }
+
+Widget getDivider() => Divider(
+      color: Colors.grey,
+      height: 32.0,
+    );
