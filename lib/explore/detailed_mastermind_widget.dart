@@ -169,7 +169,7 @@ class DetailedMastermindWidgetState extends State<DetailedMastermindWidget> {
     return Container(
         padding: EdgeInsets.only(top: 8.0, left: 16.0, right: 16.0),
         child:
-            Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: [
           Divider(
             color: Colors.grey,
             height: 24.0,
@@ -259,17 +259,17 @@ class DetailedMastermindWidgetState extends State<DetailedMastermindWidget> {
                 color: Colors.blueGrey[50],
                 child: Column(
                     children: List<Widget>.generate(whatYouGet.length, (int index) {
-                  return Container(
-                    padding: EdgeInsets.only(left: 6.0),
-                      child: Row(children: <Widget>[
-                    Icon(
-                      Icons.check_circle_outline,
-                      color: Colors.green,
-                    ),
-                    Padding(padding: EdgeInsets.only(left: 8.0)),
-                    Text(whatYouGet[index]),
-                  ]));
-                })))
+                      return Container(
+                          padding: EdgeInsets.only(left: 6.0),
+                          child: Row(children: <Widget>[
+                            Icon(
+                              Icons.check_circle_outline,
+                              color: Colors.green,
+                            ),
+                            Padding(padding: EdgeInsets.only(left: 8.0)),
+                            Text(whatYouGet[index]),
+                          ]));
+                    })))
           ]),
     );
   }

@@ -27,7 +27,7 @@ class _ExploreFeedWidgetState extends State<ExploreFeedWidget> {
                     if (position == 0) {
                       return Container(
                           padding: EdgeInsets.only(top: 20.0),
-                          child: Text(_masterminds.length.toString() + '+ masterminds to join',
+                          child: Text(_masterminds.length.toString() + '+ masterminds to join!',
                               style: TextStyle(
                                   color: Colors.black,
                                   letterSpacing: 0.5,

@@ -147,14 +147,14 @@ class OrderPageWidgetState extends State<OrderPageWidget> {
 //                color: Colors.blueGrey[50],
             child: Column(
                 children: List<Widget>.generate(whatYouGet.length, (int index) {
-              return Row(children: <Widget>[
-                Icon(Icons.check, color: Colors.green, size: 28.0),
-                Padding(padding: EdgeInsets.only(left: 16.0)),
-                Flexible(
-                    child: Text(whatYouGet[index],
-                        style: TextStyle(letterSpacing: 0.5, fontSize: 18.0, fontFamily: 'Roboto'))),
-              ]);
-            }))),
+                  return Row(children: <Widget>[
+                    Icon(Icons.check, color: Colors.green, size: 28.0),
+                    Padding(padding: EdgeInsets.only(left: 16.0)),
+                    Flexible(
+                        child: Text(whatYouGet[index],
+                            style: TextStyle(letterSpacing: 0.5, fontSize: 18.0, fontFamily: 'Roboto'))),
+                  ]);
+                }))),
         getDivider()
       ]),
     );

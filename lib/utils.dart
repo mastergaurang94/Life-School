@@ -21,6 +21,6 @@ TextStyle getHeaderTextStyle() {
 }
 
 Widget getDivider() => Divider(
-      color: Colors.grey,
-      height: 32.0,
-    );
+  color: Colors.grey,
+  height: 32.0,
+);

@@ -59,7 +59,7 @@ class Injector {
 
   RequiredFieldsProvider get requiredFieldsProvider {
     if (_requiredFieldsProviderSingleton == null) {
-      _requiredFieldsProviderSingleton = RequiredFieldsProvider(firebaseBaseRepository);
+      _requiredFieldsProviderSingleton = RequiredFieldsProvider(firebaseDatabase);
     }
     return _requiredFieldsProviderSingleton;
   }
@@ -103,5 +103,5 @@ class Injector {
     return _loginBloc;
   }
 
-  /// AUTH END
+/// AUTH END
 }

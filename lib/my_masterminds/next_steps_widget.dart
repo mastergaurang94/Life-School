@@ -24,7 +24,7 @@ class NextStepsWidgetState extends State<NextStepsWidget> {
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => HomeWidget(navItem: NavItem.masterminds)),
-                  (Route<dynamic> route) => false);
+                      (Route<dynamic> route) => false);
             },
             child: Icon(
               Icons.close,
@@ -62,22 +62,22 @@ class NextStepsWidgetState extends State<NextStepsWidget> {
 
     List<Widget> nextStepsWidgets = mockNextSteps
         .map((String action) => Container(
-              padding: EdgeInsets.only(bottom: 8.0),
-              child: Text('Step #' + (mockNextSteps.indexOf(action) + 1).toString() + ': ' + action,
-                  style: TextStyle(color: Colors.black, letterSpacing: 0.5, fontSize: 16.0, fontFamily: 'Roboto')),
-            ))
+      padding: EdgeInsets.only(bottom: 8.0),
+      child: Text('Step #' + (mockNextSteps.indexOf(action) + 1).toString() + ': ' + action,
+          style: TextStyle(color: Colors.black, letterSpacing: 0.5, fontSize: 16.0, fontFamily: 'Roboto')),
+    ))
         .toList();
 
     return Container(
         child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          padding: EdgeInsets.only(top: 16.0, bottom: 8.0),
-          child: Text('You are on your way but first a few must-do\'s: ',
-              style: TextStyle(color: Colors.black, letterSpacing: 0.5, fontSize: 16.0, fontFamily: 'Roboto')),
-        ),
-      ]..addAll(nextStepsWidgets),
-    ));
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: EdgeInsets.only(top: 16.0, bottom: 8.0),
+              child: Text('You are on your way but first a few must-do\'s: ',
+                  style: TextStyle(color: Colors.black, letterSpacing: 0.5, fontSize: 16.0, fontFamily: 'Roboto')),
+            ),
+          ]..addAll(nextStepsWidgets),
+        ));
   }
 }

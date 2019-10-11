@@ -148,7 +148,7 @@ class VerifyEmailWidget extends StatelessWidget {
                                           style: TextStyle(color: Colors.white),
                                         ),
                                         onPressed: () async {
-                                          await _bloc.handleDeleteUser();
+                                          _bloc.handleDeleteUser();
                                           final route = await _getAuthRoute.getAuthRouteName(); // Updates user object
                                           if (route != "/onboarding/email") {
                                             Navigator.of(context).pushReplacementNamed(route);

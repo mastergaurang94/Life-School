@@ -16,14 +16,14 @@ class Mastermind {
 
   Mastermind(
       {@required this.title,
-      @required this.imageUrls,
-      @required this.facilitator,
-      @required this.coverDescription,
-      @required this.labels,
-      @required this.price,
-      @required this.overview,
-      @required this.whoThisFor,
-      this.reviews});
+        @required this.imageUrls,
+        @required this.facilitator,
+        @required this.coverDescription,
+        @required this.labels,
+        @required this.price,
+        @required this.overview,
+        @required this.whoThisFor,
+        this.reviews});
 }
 
 class Facilitator {
@@ -135,11 +135,11 @@ final mockMasterminds = <Mastermind>[
       'assets/adora2.jpg',
     ],
     coverDescription:
-        'Adora was co-founder and CEO of Homejoy, which was funded by YC in 2010. She is certified Marie Kondo specialist as well.',
+    'Adora was co-founder and CEO of Homejoy, which was funded by YC in 2010. She is certified Marie Kondo specialist as well.',
     whoThisFor:
-        'This group is for CEOs who want to organize, prioritize, and clean up their home and life. You must be an acceddited investor. And, you must love joy.',
+    'This group is for CEOs who want to organize, prioritize, and clean up their home and life. You must be an acceddited investor. And, you must love joy.',
     overview:
-        'Do you have trouble keeping your workspace and week organized? This mastermind will go over the 12 key principles, with thorough practice lessons I have found that spark joy in my day to day startup life. You will learn how to stay on top of your weekly primary metric with ease',
+    'Do you have trouble keeping your workspace and week organized? This mastermind will go over the 12 key principles, with thorough practice lessons I have found that spark joy in my day to day startup life. You will learn how to stay on top of your weekly primary metric with ease',
     labels: [
       'Virtual',
       'Recurring',
@@ -156,7 +156,7 @@ final mockMasterminds = <Mastermind>[
       'assets/kevin1.png',
     ],
     coverDescription:
-        'Kevin Hale was the cofounder of Wufoo, which was funded by Y Combinator in 2006 and acquired by SurveyMonkey in 2011.',
+    'Kevin Hale was the cofounder of Wufoo, which was funded by Y Combinator in 2006 and acquired by SurveyMonkey in 2011.',
     whoThisFor: 'This is for startup founders who are at any stage. Only serious members only.',
     overview: 'Kevin has never before worked so closely and intensely with such a small group of startup founders.',
     labels: [
@@ -177,11 +177,11 @@ final mockMasterminds = <Mastermind>[
       'assets/panache3.png',
     ],
     coverDescription:
-        'Panache has never before worked so closely and intensely with such a small group of experienced practitioners',
+    'Panache has never before worked so closely and intensely with such a small group of experienced practitioners',
     whoThisFor:
-        'Panache has never before worked so closely and intensely with such a small group of experienced practitioners',
+    'Panache has never before worked so closely and intensely with such a small group of experienced practitioners',
     overview:
-        'Panache has never before worked so closely and intensely with such a small group of experienced practitioners, Panache has never before worked so closely and intensely with such a small group of experienced practitioners',
+    'Panache has never before worked so closely and intensely with such a small group of experienced practitioners, Panache has never before worked so closely and intensely with such a small group of experienced practitioners',
     labels: [
       'Virtual',
       'Weekly',
@@ -199,11 +199,11 @@ final mockMasterminds = <Mastermind>[
       'assets/tony2.png',
     ],
     coverDescription:
-        'As a Tony Robbins Platinum Partnership member you’ll receive exclusive invitations to get coaching from Tony',
+    'As a Tony Robbins Platinum Partnership member you’ll receive exclusive invitations to get coaching from Tony',
     whoThisFor:
-        'As a Tony Robbins Platinum Partnership member you’ll receive exclusive invitations to get coaching from Tony',
+    'As a Tony Robbins Platinum Partnership member you’ll receive exclusive invitations to get coaching from Tony',
     overview:
-        'As a Tony Robbins Platinum Partnership member you’ll receive exclusive invitations to get coaching from TonyAs a Tony Robbins Platinum Partnership member you’ll receive exclusive invitations to get coaching from TonyAs a Tony Robbins Platinum Partnership member you’ll receive exclusive invitations to get coaching from Tony',
+    'As a Tony Robbins Platinum Partnership member you’ll receive exclusive invitations to get coaching from TonyAs a Tony Robbins Platinum Partnership member you’ll receive exclusive invitations to get coaching from TonyAs a Tony Robbins Platinum Partnership member you’ll receive exclusive invitations to get coaching from Tony',
     labels: [
       'Live',
       'One Time'
@@ -221,11 +221,11 @@ final mockMasterminds = <Mastermind>[
       'assets/kiyosaki2.png',
     ],
     coverDescription:
-        'Robert Kiyosaki brings real financial eduation to people by helping them create long term cash flow no matter where they start',
+    'Robert Kiyosaki brings real financial eduation to people by helping them create long term cash flow no matter where they start',
     whoThisFor:
-        'Robert Kiyosaki brings real financial eduation to people by helping them create long term cash flow no matter where they start',
+    'Robert Kiyosaki brings real financial eduation to people by helping them create long term cash flow no matter where they start',
     overview:
-        'Robert Kiyosaki brings real financial eduation to people by helping them create long term cash flow no matter where they startRobert Kiyosaki brings real financial eduation to people by helping them create long term cash flow no matter where they startRobert Kiyosaki brings real financial eduation to people by helping them create long term cash flow no matter where they start',
+    'Robert Kiyosaki brings real financial eduation to people by helping them create long term cash flow no matter where they startRobert Kiyosaki brings real financial eduation to people by helping them create long term cash flow no matter where they startRobert Kiyosaki brings real financial eduation to people by helping them create long term cash flow no matter where they start',
     labels: [
       'Virtual',
       'Weekly',
@@ -244,11 +244,11 @@ final mockMasterminds = <Mastermind>[
       'assets/will3.png',
     ],
     coverDescription:
-        'Will Smith and Jada Pinkett Smith bring to you the secrets to long lasting desire and happiness in your relationship',
+    'Will Smith and Jada Pinkett Smith bring to you the secrets to long lasting desire and happiness in your relationship',
     whoThisFor:
-        'Will Smith and Jada Pinkett Smith bring to you the secrets to long lasting desire and happiness in your relationship',
+    'Will Smith and Jada Pinkett Smith bring to you the secrets to long lasting desire and happiness in your relationship',
     overview:
-        'Will Smith and Jada Pinkett Smith bring to you the secrets to long lasting desire and happiness in your relationshipWill Smith and Jada Pinkett Smith bring to you the secrets to long lasting desire and happiness in your relationship',
+    'Will Smith and Jada Pinkett Smith bring to you the secrets to long lasting desire and happiness in your relationshipWill Smith and Jada Pinkett Smith bring to you the secrets to long lasting desire and happiness in your relationship',
     labels: [
       'Virtual',
       'Weekly',
@@ -265,10 +265,10 @@ final mockMasterminds = <Mastermind>[
       'assets/shaun1.png',
     ],
     coverDescription:
-        'Get insights into how to improve your snowboarding from world renown Olympic athelete Shaun White',
+    'Get insights into how to improve your snowboarding from world renown Olympic athelete Shaun White',
     whoThisFor: 'Get insights into how to improve your snowboarding from world renown Olympic athelete Shaun White',
     overview:
-        'Get insights into how to improve your snowboarding from world renown Olympic athelete Shaun WhiteGet insights into how to improve your snowboarding from world renown Olympic athelete Shaun WhiteGet insights into how to improve your snowboarding from world renown Olympic athelete Shaun White',
+    'Get insights into how to improve your snowboarding from world renown Olympic athelete Shaun WhiteGet insights into how to improve your snowboarding from world renown Olympic athelete Shaun WhiteGet insights into how to improve your snowboarding from world renown Olympic athelete Shaun White',
     labels: [
       'Virtual',
       'Weekly',
