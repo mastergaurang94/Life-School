@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:lifeschool/auth/login_bloc.dart';
 import 'package:lifeschool/auth/provider/required_fields_provider.dart';
@@ -46,6 +47,10 @@ class Injector {
     return GoogleSignIn();
   }
 
+  FacebookLogin get facebookLogin {
+    return FacebookLogin();
+  }
+
   var _firebaseBaseRepository;
 
   FirebaseBaseRepository get firebaseBaseRepository {
@@ -86,7 +91,7 @@ class Injector {
 
   AuthRepository get authRepository {
     if (_authRepositorySingleton == null) {
-      _authRepositorySingleton = AuthRepository(firebaseAuth, googleSignIn);
+      _authRepositorySingleton = AuthRepository(firebaseAuth, googleSignIn, facebookLogin);
     }
 
     return _authRepositorySingleton;

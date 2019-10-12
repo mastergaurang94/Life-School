@@ -168,7 +168,27 @@ class LoginScreenState extends State<LoginScreen> {
         borderRadius: BorderRadius.circular(30.0),
       ),
       icon: Icon(FontAwesomeIcons.facebook, color: Colors.blueAccent),
-      onPressed: () {},
+      onPressed: () async {
+        try {
+          await _bloc.handleFacebookLoginPressed(context);
+        } catch (e) {
+          showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text('Failed to continue with Facebook'),
+                content: Text(
+                    'Please retry or try again later.'),
+                actions: <Widget>[
+                  RaisedButton(
+                    child: Text('OK', style: TextStyle(color: Colors.white)),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ));
+        }
+      },
       label: Text('CONTINUE WITH FACEBOOK', style: TextStyle(color: Colors.grey[800])),
       color: Colors.white,
     );

@@ -1,12 +1,26 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class AuthRepository {
   final FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
+  final FacebookLogin _facebookLogin;
 
-  AuthRepository(this._firebaseAuth, this._googleSignIn);
+  AuthRepository(this._firebaseAuth, this._googleSignIn, this._facebookLogin);
+
+  Future<FirebaseUser> loginWithFacebook() async {
+    final facebookPermissions = ['email', 'public_profile'];  // TODO: get needed permissions
+    final result = await _facebookLogin.logIn(facebookPermissions);
+    if (result.status == FacebookLoginStatus.loggedIn) {
+      final token = result.accessToken.token;
+      AuthCredential credential = FacebookAuthProvider.getCredential(accessToken: token);
+      await _firebaseAuth.signInWithCredential(credential);
+    }
+
+    return _firebaseAuth.currentUser();
+  }
 
   Future<FirebaseUser> signInWithGoogle() async {
     final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
