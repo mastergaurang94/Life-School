@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Life School</string>
+    <string name="facebook_app_id">381057916111197</string>
+    <string name="fb_login_protocol_scheme">fb38105791611119</string>
+</resources>

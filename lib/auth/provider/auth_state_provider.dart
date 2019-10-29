@@ -28,7 +28,7 @@ class AuthStateProvider {
 
     // Email verification requires "reloading" user to see.
     // Only bother with reload for this step or it takes too long.
-    if (!currentUser.isEmailVerified) {
+    if (!currentUser.isEmailVerified && isAuthMechanismEmailPassword(currentUser)) {
       await currentUser.reload();
       currentUser = await _firebaseAuth.currentUser();
       if (!currentUser.isEmailVerified) {
@@ -46,6 +46,11 @@ class AuthStateProvider {
 //    if (missingFields.isNotEmpty) return MissingFields(missingFields);
 
     return LoggedIn();
+  }
+
+  bool isAuthMechanismEmailPassword(FirebaseUser currentUser) {
+    // TODO: This could break if Facebook changes their API for providerId == 'password'.
+    return currentUser.providerData.any((UserInfo info) => info.providerId == 'password');
   }
 
   Future<bool> _isFieldMissingForUser(String userId, String requiredField) async {
