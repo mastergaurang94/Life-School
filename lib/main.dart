@@ -1,4 +1,4 @@
-// Copyright 2018 The Flutter team. All rights reserved.
+// Copyright 2019 The Flutter team. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -18,6 +18,7 @@ class LifeSchoolApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Life School',
       theme: ThemeData(
         primaryColor: Colors.white,
@@ -52,5 +53,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => HomeWidget(navItem: NavItem.profile));
     case OnboardingVerifyEmailRoute:
       return MaterialPageRoute(builder: (context) => VerifyEmailWidget());
+    default:
+      return MaterialPageRoute(builder: (context) => HomeWidget(navItem: NavItem.explore));
   }
 }

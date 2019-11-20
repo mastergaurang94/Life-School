@@ -161,6 +161,7 @@ class SignUpWidgetState extends State<SignUpWidget> {
             await _bloc.handleSignUpPressed(context, _emailController.text, _passwordController.text,
                 _confirmPasswordController.text, _firstNameController.text, _lastNameController.text);
           } catch (e) {
+            print(e);
             showDialog(
                 context: context,
                 builder: (context) => AlertDialog(

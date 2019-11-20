@@ -35,69 +35,77 @@ class LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-            color: Colors.white,
-            padding: EdgeInsets.all(20.0),
-            child: Form(
-                child: ListView(children: [
-              Container(
-                padding: EdgeInsets.only(top: 20.0),
-                child: Icon(Icons.school, size: 100), // TODO: real Life School logo
+      body: Container(
+        color: Colors.white,
+        padding: EdgeInsets.all(20.0),
+        child: Container(
+          child: ListView(children: [
+            Container(
+              padding: EdgeInsets.only(top: 20.0),
+              child: Icon(Icons.school, size: 100), // TODO: real Life School logo
+            ),
+            Container(
+              padding: EdgeInsets.only(top: 20.0),
+              child: Text(
+                'Sign in to get started',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w700,
+                  fontFamily: 'Roboto',
+                  letterSpacing: 0.5,
+                  fontSize: 20,
+                ),
               ),
-              Container(
-                  padding: EdgeInsets.only(top: 20.0),
-                  child: Text(
-                    'Sign in to get started',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: 'Roboto',
-                      letterSpacing: 0.5,
-                      fontSize: 20,
-                    ),
-                  )),
-              Container(
-                  padding: EdgeInsets.only(top: 10.0, bottom: 20.0),
-                  child: Text(
-                    'By tapping continue, log in, or creating an account, I agree to Life School\'s Terms of Service, Payment Terms of Service, Privacy Policy, and Nondiscrimination Policy.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.grey[1000],
-                      fontWeight: FontWeight.w400,
-                      fontFamily: 'Roboto',
-                      letterSpacing: 0.5,
-                      fontSize: 14,
-                    ),
-                  )),
-              Container(
-                  padding: EdgeInsets.only(bottom: 10.0),
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-                    _facebookLoginButton(),
-                    _googleLoginButton(),
-                  ])),
-              Container(
-                  padding: EdgeInsets.only(bottom: 10.0),
-                  child: Text(
-                    'OR',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.grey[700],
-                      fontWeight: FontWeight.w600,
-                      fontFamily: 'Roboto',
-                      letterSpacing: 0.5,
-                      fontSize: 18,
-                    ),
-                  )),
-              Container(
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-                _createAccountButton(),
-                _loginButton(),
-              ]))
-            ]))));
+            ),
+            Container(
+              padding: EdgeInsets.only(top: 10.0, bottom: 20.0),
+              child: Text(
+                'By tapping continue, log in, or create an account, I agree to Life School\'s Terms of Service, Payment Terms of Service, Privacy Policy, and Nondiscrimination Policy.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.grey[1000],
+                  fontWeight: FontWeight.w400,
+                  fontFamily: 'Roboto',
+                  letterSpacing: 0.5,
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(bottom: 10.0),
+              child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                _facebookLoginButton(context),
+                _googleLoginButton(context),
+              ]),
+            ),
+            Container(
+              padding: EdgeInsets.only(bottom: 10.0),
+              child: Text(
+                'OR',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.grey[700],
+                  fontWeight: FontWeight.w600,
+                  fontFamily: 'Roboto',
+                  letterSpacing: 0.5,
+                  fontSize: 18,
+                ),
+              ),
+            ),
+            Container(
+              child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                _createAccountButton(context),
+                _loginButton(context),
+              ]),
+            )
+          ]),
+        ),
+      ),
+    );
   }
 
-  Widget _loginButton() {
+  Widget _loginButton(context) {
     return RaisedButton(
       elevation: 0.0,
       shape: RoundedRectangleBorder(
@@ -114,7 +122,7 @@ class LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _createAccountButton() {
+  Widget _createAccountButton(context) {
     return RaisedButton(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30.0),
@@ -130,7 +138,7 @@ class LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _googleLoginButton() {
+  Widget _googleLoginButton(context) {
     return RaisedButton.icon(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30.0),
@@ -143,18 +151,17 @@ class LoginScreenState extends State<LoginScreen> {
           showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: Text('Failed to continue with Google'),
-                content: Text(
-                    'Please retry or try again later.'),
-                actions: <Widget>[
-                  RaisedButton(
-                    child: Text('OK', style: TextStyle(color: Colors.white)),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              ));
+                    title: Text('Failed to continue with Google'),
+                    content: Text('Please retry or try again later.'),
+                    actions: <Widget>[
+                      RaisedButton(
+                        child: Text('OK', style: TextStyle(color: Colors.white)),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  ));
         }
       },
       label: Text('CONTINUE WITH GOOGLE', style: TextStyle(color: Colors.white)),
@@ -162,7 +169,7 @@ class LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _facebookLoginButton() {
+  Widget _facebookLoginButton(context) {
     return RaisedButton.icon(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30.0),
@@ -175,18 +182,17 @@ class LoginScreenState extends State<LoginScreen> {
           showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: Text('Failed to continue with Facebook'),
-                content: Text(
-                    'Please retry or try again later.'),
-                actions: <Widget>[
-                  RaisedButton(
-                    child: Text('OK', style: TextStyle(color: Colors.white)),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              ));
+                    title: Text('Failed to continue with Facebook'),
+                    content: Text('Please retry or try again later.'),
+                    actions: <Widget>[
+                      RaisedButton(
+                        child: Text('OK', style: TextStyle(color: Colors.white)),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  ));
         }
       },
       label: Text('CONTINUE WITH FACEBOOK', style: TextStyle(color: Colors.grey[800])),

@@ -10,8 +10,8 @@ part 'user.g.dart';
 abstract class User implements Built<User, UserBuilder> {
   String get id;
   String get firstName;
-  String get lastname;
-  String get imageId;
+  String get lastName;
+  String get imageUrl;
 
   @nullable
   String get phone;

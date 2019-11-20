@@ -1,6 +1,7 @@
 import 'package:lifeschool/auth/usecase/get_auth_route.dart';
 import 'package:lifeschool/injection/dependency_injection.dart';
 import 'package:lifeschool/auth/login_bloc.dart';
+import 'package:lifeschool/services/user/model/user.dart';
 import 'package:flutter/material.dart';
 
 class VerifyEmailWidget extends StatelessWidget {
@@ -36,11 +37,11 @@ class VerifyEmailWidget extends StatelessWidget {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 40.0, right: 40, top: 8, bottom: 8),
-                        child: FutureBuilder<String>(
+                        child: FutureBuilder<User>(
                             future: _bloc.getUser(),
                             builder: (context, snapshot) {
                               if (snapshot.data != null) {
-                                final email = snapshot.data;
+                                final email = snapshot.data.email;
                                 return RichText(
                                   textAlign: TextAlign.center,
                                   text: TextSpan(style: Theme.of(context).textTheme.body1, children: [
@@ -130,33 +131,34 @@ class VerifyEmailWidget extends StatelessWidget {
                         ),
                         onPressed: () async {
                           showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                    title: Text("Woops"),
-                                    content: Text(
-                                        "It happens to the best of us. We'll delete this account, and you can create another."),
-                                    actions: <Widget>[
-                                      FlatButton(
-                                        child: Text("No, go back"),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                      RaisedButton(
-                                        child: Text(
-                                          "Sounds great!",
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                        onPressed: () async {
-                                          _bloc.handleDeleteUser();
-                                          final route = await _getAuthRoute.getAuthRouteName(); // Updates user object
-                                          if (route != "/onboarding/email") {
-                                            Navigator.of(context).pushReplacementNamed(route);
-                                          }
-                                        },
-                                      )
-                                    ],
-                                  ));
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text("Woops"),
+                              content: Text(
+                                  "It happens to the best of us. We'll delete this account, and you can create another."),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child: Text("No, go back"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                RaisedButton(
+                                  child: Text(
+                                    "Sounds great!",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  onPressed: () async {
+                                    _bloc.handleDeleteUser();
+                                    final route = await _getAuthRoute.getAuthRouteName(); // Updates user object
+                                    if (route != "/onboarding/email") {
+                                      Navigator.of(context).pushReplacementNamed(route);
+                                    }
+                                  },
+                                )
+                              ],
+                            ),
+                          );
                         },
                         child: Text("...I entered the wrong email."),
                       ),

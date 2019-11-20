@@ -3,8 +3,11 @@ import 'package:lifeschool/auth/widgets/login_screen.dart';
 
 import 'package:lifeschool/explore/explore_widget.dart';
 import 'package:lifeschool/my_masterminds/my_masterminds_widget.dart';
+import 'package:lifeschool/profile/widgets/profile_screen_widget.dart';
+import 'package:lifeschool/auth/login_bloc.dart';
+import 'package:lifeschool/injection/dependency_injection.dart';
 
-enum NavItem { explore, inbox, masterminds, profile }
+enum NavItem { explore, inbox, masterminds, facilitate, profile }
 
 class HomeWidget extends StatefulWidget {
   final NavItem navItem;
@@ -15,63 +18,66 @@ class HomeWidget extends StatefulWidget {
   _HomeWidgetState createState() => _HomeWidgetState(currentIndex: this.navItem.index);
 }
 
-class _HomeWidgetState extends State<HomeWidget> {
+class _HomeWidgetState extends State<HomeWidget> with SingleTickerProviderStateMixin {
+  final LoginBloc _bloc = Injector().loginBloc;
+  TabController tabController;
   int currentIndex;
 
   _HomeWidgetState({this.currentIndex});
 
-  final List<Widget> _children = [
-    ExploreFeedWidget(),
-    ExploreFeedWidget(),
-    MyMastermindsWidget(),
-    LoginScreen(),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    tabController = new TabController(length: NavItem.values.length, vsync: this);
+    tabController.index = currentIndex;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: Icon(Icons.search, size: 32.0),
+      body: TabBarView(controller: tabController, children: [
+        ExploreFeedWidget(),
+        ProfileScreen(),
+        MyMastermindsWidget(),
+        ProfileScreen(),
+        new FutureBuilder(
+            future: getLoginOrProfileScreen(),
+            initialData: CircularProgressIndicator(),
+            builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.waiting:
+                  return const CircularProgressIndicator();
+                default:
+                  if (snapshot.hasError)
+                    return Text('Error: ${snapshot.error}');
+                  else
+                    return snapshot.data;
+              }
+            },
+        ),
+      ]),
+      bottomNavigationBar: Material(
+        color: Colors.blueAccent,
+        child: SafeArea(
+          child: TabBar(
+              controller: tabController,
+              labelColor: Colors.white,
+              unselectedLabelColor: Colors.black,
+              indicatorColor: Colors.transparent,
+              tabs: [
+                Tab(icon: Icon(Icons.search, size: 32.0)),
+                Tab(icon: Icon(Icons.chat_bubble, size: 32.0)),
+                Tab(icon: Icon(Icons.school, size: 32.0)), // TODO: replace with Life School logo
+                Tab(icon: Icon(Icons.highlight, size: 32.0)),
+                Tab(icon: Icon(Icons.person, size: 32.0))
+              ]),
+        ),
       ),
-      body: _children[currentIndex],
-      bottomNavigationBar: _buildBottomNavigation(),
     );
   }
 
-  void _onTabTapped(BuildContext context, int index) {
-    setState(() => currentIndex = index);
-  }
-
-  Widget _buildBottomNavigation() {
-    const selectedIcons = <IconData>[
-      Icons.search,
-      Icons.chat_bubble,
-      Icons.school, // TODO: replace with Life School logo
-      Icons.person,
-    ];
-    const unselectedIcons = <IconData>[
-      Icons.search,
-      Icons.chat_bubble_outline,
-      Icons.school,
-      Icons.person_outline,
-    ];
-
-    assert(selectedIcons.length == unselectedIcons.length);
-    assert(_children.length == selectedIcons.length);
-
-    final bottomNavigationItems = List.generate(selectedIcons.length, (int i) {
-      final iconData = currentIndex == i ? selectedIcons[i] : unselectedIcons[i];
-      return BottomNavigationBarItem(icon: Icon(iconData, color: Colors.black), title: Container());
-    }).toList();
-
-    return Builder(builder: (BuildContext context) {
-      return BottomNavigationBar(
-        iconSize: 32.0,
-        type: BottomNavigationBarType.fixed,
-        items: bottomNavigationItems,
-        currentIndex: currentIndex,
-        onTap: (int i) => _onTabTapped(context, i),
-      );
-    });
+  Future<Widget> getLoginOrProfileScreen() async {
+    Widget loginOrProfileScreen = (await _bloc.getUser()) == null ? LoginScreen() : ProfileScreen();
+    return loginOrProfileScreen;
   }
 }

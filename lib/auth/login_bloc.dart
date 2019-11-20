@@ -1,5 +1,6 @@
 import 'package:lifeschool/auth/usecase/auth_repository.dart';
 import 'package:lifeschool/auth/usecase/get_auth_route.dart';
+import 'package:lifeschool/services/user/model/user.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
@@ -32,8 +33,7 @@ class LoginBloc {
     loginState.add(LoginState.LOADING);
 
     try {
-      await _authRepository.signUp(email, password);
-
+      await _authRepository.signUp(email, password, firstName, lastName);
       loginState.add(LoginState.SUCCESS);
       final route = await _getAuthRoute.getAuthRouteName();
       Navigator.of(context).pushNamed(route);
@@ -70,8 +70,7 @@ class LoginBloc {
     loginState.add(LoginState.IDLE);
   }
 
-  // TODO: adjust return to user object
-  Future<String> getUser() async {
+  Future<User> getUser() async {
     return await _authRepository.getUser();
   }
 

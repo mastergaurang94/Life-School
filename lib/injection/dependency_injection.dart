@@ -1,18 +1,15 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:lifeschool/auth/login_bloc.dart';
-import 'package:lifeschool/auth/provider/required_fields_provider.dart';
 import 'package:lifeschool/auth/provider/auth_state_provider.dart';
 import 'package:lifeschool/auth/usecase/auth_repository.dart';
 import 'package:lifeschool/auth/usecase/get_auth_route.dart';
-import 'package:lifeschool/data/firebase_base_repository.dart';
-import 'package:lifeschool/profile/repository/user_repository.dart';
-import 'package:lifeschool/profile/repository/firebase_user_repository.dart';
+import 'package:lifeschool/services/user/repository/user_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum Flavor { MOCK, PROD }
@@ -35,8 +32,8 @@ class Injector {
     return FirebaseAuth.instance;
   }
 
-  FirebaseDatabase get firebaseDatabase {
-    return FirebaseDatabase.instance;
+  Firestore get firestore {
+    return Firestore.instance;
   }
 
   FirebaseStorage get firebaseStorage {
@@ -51,29 +48,11 @@ class Injector {
     return FacebookLogin();
   }
 
-  var _firebaseBaseRepository;
-
-  FirebaseBaseRepository get firebaseBaseRepository {
-    if (_firebaseBaseRepository == null) {
-      _firebaseBaseRepository = FirebaseBaseRepository(firebaseDatabase);
-    }
-    return _firebaseBaseRepository;
-  }
-
-  RequiredFieldsProvider _requiredFieldsProviderSingleton;
-
-  RequiredFieldsProvider get requiredFieldsProvider {
-    if (_requiredFieldsProviderSingleton == null) {
-      _requiredFieldsProviderSingleton = RequiredFieldsProvider(firebaseDatabase);
-    }
-    return _requiredFieldsProviderSingleton;
-  }
-
   AuthStateProvider _authStateProviderSingleton;
 
   AuthStateProvider get authStateProvider {
     if (_authStateProviderSingleton == null) {
-      _authStateProviderSingleton = AuthStateProvider(firebaseAuth, requiredFieldsProvider, userRepository);
+      _authStateProviderSingleton = AuthStateProvider(firebaseAuth, userRepository);
     }
     return _authStateProviderSingleton;
   }
@@ -82,7 +61,7 @@ class Injector {
 
   UserRepository get userRepository {
     if (_userRepositorySingleton == null) {
-      _userRepositorySingleton = FirebaseUserRepository(firebaseBaseRepository);
+      _userRepositorySingleton = UserRepository(firestore);
     }
     return _userRepositorySingleton;
   }
@@ -91,7 +70,7 @@ class Injector {
 
   AuthRepository get authRepository {
     if (_authRepositorySingleton == null) {
-      _authRepositorySingleton = AuthRepository(firebaseAuth, googleSignIn, facebookLogin);
+      _authRepositorySingleton = AuthRepository(firebaseAuth, googleSignIn, facebookLogin, userRepository);
     }
 
     return _authRepositorySingleton;
